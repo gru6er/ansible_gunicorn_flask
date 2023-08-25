@@ -1,1 +1,1 @@
-test_host ansible_host=172.17.0.2 ansible_user=test ansible_ssh_pass=test ansible_become_password=test become_method=su
+test_host ansible_host=( ip docker conteiner`a ) ansible_user=test ansible_ssh_pass=test ansible_become_password=test become_method=su
