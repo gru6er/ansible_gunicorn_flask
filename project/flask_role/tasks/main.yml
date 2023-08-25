@@ -1,0 +1,62 @@
+---
+# tasks file for flask
+- name: Create a non-privileged user
+  user:
+    name: "{{ user }}"
+    password: "$6$1T1bOdFFqsPD/kYo$CEtf5gntBOUczsf/V9TBE/0Bmw5NAKvSTQ0gC08ycbshAIM8l/bE7uINE1Ddj9vKgKpD.cl3wr0pJ/qoaPlGi0"
+    create_home: yes
+    shell: /bin/bash
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ logs_folder }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0750'
+
+- name: Install venv
+  ansible.builtin.pip:
+    name:
+        - virtualenv
+
+- name: Install gunicorn into venv
+  ansible.builtin.pip:
+    name:
+        - gunicorn
+        - flask
+    virtualenv: "{{ home_folder }}/venv"
+
+- name: Install git and nginx
+  apt:
+    name:
+      - git
+      - nginx
+    state: present
+    update_cache: yes
+
+- name: Clone application repository
+  git:
+    repo: https://github.com/gru6er/flask_app.git
+    dest: "{{ app_folder }}"
+    version: main
+
+- name: Configure gunicorn
+  template:
+    src: gunicorn.conf.py.j2
+    dest: "{{ app_folder }}/gunicorn.conf.py"
+
+
+- name: Configure nginx
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: Restart nginx
+
+- name: Configure gunicorn supervisor
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/flask_app.conf
+  notify: Reload supervisor
+
+

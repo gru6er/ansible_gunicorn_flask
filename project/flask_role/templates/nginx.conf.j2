@@ -1,0 +1,15 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root "{{ app_folder }}";
+
+    access_log "{{ logs_folder }}/nginx_access.log";
+    error_log {{ logs_folder}}/nginx_error.log warn;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}

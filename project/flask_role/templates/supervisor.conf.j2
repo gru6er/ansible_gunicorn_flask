@@ -1,0 +1,6 @@
+[program:flask]
+command=/home/vasya/venv/bin/gunicorn -w 4 -b :8000 -c {{ app_folder }}/gunicorn.conf.py wsgi:app
+directory={{ app_folder }}
+user=vasya
+stdout_logfile = {{ logs_folder }}/logfile_supervisor
+stderr_logfile = {{ logs_folder }}/app_error_supervisor

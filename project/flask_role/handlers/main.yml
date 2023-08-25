@@ -1,0 +1,10 @@
+---
+# handlers file for flask
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Reload supervisor
+  shell: supervisorctl reload

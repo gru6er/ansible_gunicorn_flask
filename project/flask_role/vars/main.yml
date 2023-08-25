@@ -1,0 +1,6 @@
+---
+# vars file for flask
+logs_folder: "/home/vasya/logs"
+app_folder: "/home/vasya/flask_app"
+home_folder: "/home/vasya"
+user: "vasya"
