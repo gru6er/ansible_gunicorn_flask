@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-ARG DEBIAN_FRONTEND=noninteractive
+# ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install  openssh-server sudo supervisor make build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
